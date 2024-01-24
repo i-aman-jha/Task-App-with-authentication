@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
+import 'package:flutter_application_1/utilities/contactform.dart';
 import 'package:flutter_application_1/utilities/footer.dart';
 import 'package:flutter_application_1/utilities/socialmedia.dart';
 
@@ -99,14 +100,16 @@ class ContactPage extends StatelessWidget {
         ),
       ),
 
-      body: Column(
-        children: [
-          Expanded(
-            child: buildSocialMediaIcons()
-            ),
-          footer(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ContactForm(),
+            buildSocialMediaIcons(),
+          ],
+        ),
       ),
+      resizeToAvoidBottomInset: false, // Set this to false to prevent the body from resizing when the keyboard is open
+      bottomNavigationBar: footer(),
       
     );
   }
