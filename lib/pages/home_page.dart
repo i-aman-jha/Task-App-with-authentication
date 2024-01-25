@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/database.dart';
 
@@ -113,6 +115,21 @@ class _HomePageState extends State<HomePage> {
           ),
            
           ),
+          actions: [
+          // logouut button
+          IconButton(
+            icon: Icon(Icons.logout_outlined,color: Colors.black,),
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Signed Out Successfully...')),
+                );
+                Navigator.push(context,MaterialPageRoute(builder: (context) => const SignInScreen()));
+              });
+            },
+          ),
+        ],
+          
         backgroundColor: Colors.blueAccent,
         elevation: 15,
         shadowColor: Colors.blueAccent,
