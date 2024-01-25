@@ -183,30 +183,30 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),  
-            ListTile(
+            // ListTile(
               
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.contact_support),
-              title: 
-               Text('Register',style: GoogleFonts.orbitron(
-                fontSize: 25,
-                fontWeight:FontWeight.w300
-              ),),
-              onTap: (){
-                // Close the drawer before navigating
+            //   contentPadding: EdgeInsets.all(15),
+            //   leading: Icon(Icons.contact_support),
+            //   title: 
+            //    Text('Register',style: GoogleFonts.orbitron(
+            //     fontSize: 25,
+            //     fontWeight:FontWeight.w300
+            //   ),),
+            //   onTap: (){
+            //     // Close the drawer before navigating
                 
-                Navigator.of(context).pop(); 
+            //     Navigator.of(context).pop(); 
         
-                //Check if the current route is not Aboutpage, then navigate
-                if (ModalRoute.of(context)?.settings.name != SignInScreen.routeName) {
+            //     //Check if the current route is not Aboutpage, then navigate
+            //     if (ModalRoute.of(context)?.settings.name != SignInScreen.routeName) {
                   
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignInScreen()),
-                  );
-                }
-              },
-            ),  
+            //       Navigator.pushReplacement(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => SignInScreen()),
+            //       );
+            //     }
+            //   },
+            // ),  
           ],
         ),
       ),

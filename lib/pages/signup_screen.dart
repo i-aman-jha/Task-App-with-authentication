@@ -75,11 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                textField("Enter Username",Icons.person_outline_rounded,false,_usernameTextController),
-              
-                const SizedBox(
-                  height: 30,
-                ),
+                
                 textField("Enter Email",Icons.email,false,_emailTextController),
               
                 const SizedBox(
@@ -96,14 +92,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     password: _passwordTextController.text
                     ).then((value) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Account created successfully...')),
+                        const SnackBar(content: Text('Account created successfully...')),
                       );
                       print("created new account");
                       Navigator.push(context,MaterialPageRoute(builder: (context) => SignInScreen()));
                     }).onError((error, stackTrace) {
                       // print("Error ${error.tostring()}");
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error...')),
+                        const SnackBar(content: Text('Error...')),
                       );
                     });
                   

@@ -2,6 +2,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/signin_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'pages/home_page.dart';
@@ -36,7 +37,7 @@ class _HomPageState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:HomePage(),
+      home:SignInScreen(),
       theme: ThemeData(primaryColor: Colors.blueAccent),
     );
   }

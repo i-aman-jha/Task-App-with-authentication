@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/pages/signup_screen.dart';
 import 'package:flutter_application_1/utilities/reusable_func.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = '/SignInScreen';
@@ -13,8 +15,8 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  TextEditingController _passwordTextController=TextEditingController();
-  TextEditingController _emailTextController=TextEditingController();
+  final TextEditingController _passwordTextController=TextEditingController();
+  final TextEditingController _emailTextController=TextEditingController();
 
 
   @override
@@ -55,19 +57,35 @@ class _SignInScreenState extends State<SignInScreen> {
                   
                   ),
 
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                textField("Enter Username",Icons.person_outline_rounded,false,_emailTextController),
+                textField("Enter Email",Icons.person_outline_rounded,false,_emailTextController),
               
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 textField("Enter Password",Icons.password_sharp,true,_passwordTextController),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                SignIn_UpButton(context, true, (){}),
+                SignIn_UpButton(context, true, (){
+                  FocusScope.of(context).unfocus();
+                  FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailTextController.text, 
+                    password: _passwordTextController.text
+                    ).then((value) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Signed In Successfully...')),
+                      );
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const HomePage()));
+                    }).onError((error, stackTrace) {
+                      // print("Error ${error.tostring()}");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Incorrect Email address or Password..')),
+                      );
+                    });
+                }),
                 signUpOption(),
               ],
             ),
