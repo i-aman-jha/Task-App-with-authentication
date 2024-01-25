@@ -12,6 +12,20 @@ class _ContactFormState extends State<ContactForm> {
   String _email = '';
   String _message = '';
 
+  void _submitForm() {
+    // Validate returns true if the form is valid, otherwise false.
+    if (_formKey.currentState!.validate()) {
+      FocusScope.of(context).unfocus();
+      // If the form is valid, display a snackbar and save the information
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Submitted..')),
+      );
+      _formKey.currentState!.save();
+    // Here, you can use _name, _email, and _message for further actions like sending an email
+    }
+  }
+   
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -95,17 +109,7 @@ class _ContactFormState extends State<ContactForm> {
                   elevation: MaterialStateProperty.all(20),
                   
                 ),
-                onPressed: () {
-                  // Validate returns true if the form is valid, otherwise false.
-                  if (_formKey.currentState!.validate()) {
-                    // If the form is valid, display a snackbar and save the information
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Processing Data')),
-                    );
-                    _formKey.currentState!.save();
-                    // Here, you can use _name, _email, and _message for further actions like sending an email
-                  }
-                },
+                onPressed: _submitForm,
                 child: Text('Submit',style: TextStyle(color: Colors.black),),
               ),
             ),

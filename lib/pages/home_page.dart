@@ -6,6 +6,7 @@ import 'package:flutter_application_1/data/database.dart';
 import 'package:flutter_application_1/pages/contact.dart';
 
 import 'package:flutter_application_1/utilities/dialogBox.dart';
+import 'package:flutter_application_1/pages/signin_screen.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -178,6 +179,30 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => ContactPage()),
+                  );
+                }
+              },
+            ),  
+            ListTile(
+              
+              contentPadding: EdgeInsets.all(15),
+              leading: Icon(Icons.contact_support),
+              title: 
+               Text('Register',style: GoogleFonts.orbitron(
+                fontSize: 25,
+                fontWeight:FontWeight.w300
+              ),),
+              onTap: (){
+                // Close the drawer before navigating
+                
+                Navigator.of(context).pop(); 
+        
+                //Check if the current route is not Aboutpage, then navigate
+                if (ModalRoute.of(context)?.settings.name != SignInScreen.routeName) {
+                  
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
                   );
                 }
               },
