@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContactForm extends StatefulWidget {
   @override
@@ -13,18 +14,18 @@ class _ContactFormState extends State<ContactForm> {
   String _message = '';
 
   void _submitForm() {
-    // Validate returns true if the form is valid, otherwise false.
+
     if (_formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
-      // If the form is valid, display a snackbar and save the information
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Submitted..')),
+        const SnackBar(content: Text('Submitted..')),
       );
       _formKey.currentState!.save();
     // Here, you can use _name, _email, and _message for further actions like sending an email
     }
   }
-   
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class _ContactFormState extends State<ContactForm> {
           Padding(
             padding: const EdgeInsets.only(top: 15,left: 8,right: 8,bottom: 8),
             child: TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.all(10)
@@ -66,7 +67,7 @@ class _ContactFormState extends State<ContactForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.all(10)
@@ -79,13 +80,14 @@ class _ContactFormState extends State<ContactForm> {
                 }
                 return null;
               },
+              // keyboardType: TextInputType.emailAddress,
               onSaved: (value) => _email = value!,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Message',
                 border: OutlineInputBorder(),
                 contentPadding: EdgeInsets.all(10)
@@ -110,7 +112,7 @@ class _ContactFormState extends State<ContactForm> {
                   
                 ),
                 onPressed: _submitForm,
-                child: Text('Submit',style: TextStyle(color: Colors.black),),
+                child: const Text('Submit',style: TextStyle(color: Colors.black),),
               ),
             ),
           ),
