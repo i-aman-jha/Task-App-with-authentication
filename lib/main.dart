@@ -17,6 +17,7 @@ void main() async {
     );
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
 
 
   runApp(const MyApp());
@@ -26,10 +27,10 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _HomPageState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _HomPageState extends State<MyApp> {
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
