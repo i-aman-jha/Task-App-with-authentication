@@ -50,10 +50,7 @@ Container SignIn_UpButton(BuildContext context,bool isLogin,Function onTap){
       ),
       style: ButtonStyle(
         backgroundColor: MaterialStateColor.resolveWith((states) {
-          if(states.contains(MaterialState.pressed)){
-            return Color.fromARGB(255, 0, 181, 253);
-          }
-          return Colors.white;
+          return states.contains(MaterialState.pressed) ? Color.fromARGB(255, 0, 181, 253) : Colors.white;
         }),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       ),

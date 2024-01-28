@@ -16,14 +16,7 @@ void main() async {
     // options: DefaultFirebaseOptions.currentPlatform,
     );
 
-  FirebaseFirestore.instance.settings=const Settings(
-    persistenceEnabled: true
-  );
-
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-  );
-  
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
   runApp(const MyApp());

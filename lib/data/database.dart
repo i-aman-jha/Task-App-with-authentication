@@ -7,31 +7,50 @@ class TaskDatabase {
 
   List<Map<String, dynamic>> taskList = [];
 
-  Future<void> createInitialData() async {
+  Future<void> createInitialData(String userId) async {
+    // Create a subcollection for each user
+    CollectionReference userTasksCollection =
+        FirebaseFirestore.instance.collection('users').doc(userId).collection('tasks');
+
     taskList = [
-      {"title": "Task 1", "completed": false},
-      {"title": "Task 2", "completed": false},
+      {"taskName": "Task 1", "taskCompleted": false},
+      {"taskName": "Task 2", "taskCompleted": false},
     ];
 
-    // Add tasks to Firebase
+    // Add tasks to the user-specific subcollection
     for (Map<String, dynamic> task in taskList) {
-      await _tasksCollection.add(task);
+      await userTasksCollection.add(task);
     }
   }
 
- Future<void> loadData() async {
-  // Fetch tasks from Firebase
-  QuerySnapshot querySnapshot = await _tasksCollection.get();
 
-  taskList = querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-}
+ Future<void> loadData(String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('tasks')
+          .get();
+
+      taskList = querySnapshot.docs
+          .map((doc) => {
+                "taskName": doc['taskName'],
+                "taskCompleted": doc['taskCompleted'],
+                "taskId": doc.id,
+              })
+          .toList();
+          
+    } catch (e) {
+      print('Error loading data from Firestore: $e');
+    }
+  }
 
 
   Future<void> updateDatabase() async {
     // Update tasks in Firebase
     for (Map<String, dynamic> task in taskList) {
-      // Assuming you have a unique identifier for each task
-      String taskId = task['taskId']; // replace 'taskId' with your actual identifier
+    
+      String taskId = task['taskId'];
 
       await _tasksCollection.doc(taskId).update(task);
     }

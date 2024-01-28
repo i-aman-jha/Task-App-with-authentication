@@ -24,28 +24,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   TaskDatabase db = TaskDatabase();
 
   @override
   void initState() {
-    
-      db.loadData();
+    User? user = _auth.currentUser;
+    if (user != null) {
+      db.loadData(user.uid);
+    }
     super.initState();
   }
 
   void saveNewTask() async {
     try {
-      await _firestore.collection('tasks').add({
-        'taskName': _controller.text,
-        'taskCompleted': false,
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Color.fromARGB(247, 158, 158, 158),
-          content: Text('Task Added...'),
-        ),
-      );
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('users').doc(user.uid).collection('tasks').add({
+          'taskName': _controller.text,
+          'taskCompleted': false,
+        });
+        db.loadData(user.uid);
+      }
     } catch (e) {
       print('Error adding task: $e');
     }
@@ -54,29 +54,50 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pop();
   }
 
-  void checkBoxChanged(bool? value, String taskId) async {
-    try {
-      await _firestore.collection('tasks').doc(taskId).update({
+void checkBoxChanged(bool? value, String taskId) async {
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('tasks')
+          .doc(taskId)
+          .update({
         'taskCompleted': !value!,
       });
-    } catch (e) {
-      print('Error updating task: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(247, 158, 158, 158),
+          content: Text('Task Added...'),
+        ),
+      );
     }
+  } catch (e) {
+    print('Error updating task: $e');
   }
-
-  void deleteTask(String taskId) async {
-    try {
-      await _firestore.collection('tasks').doc(taskId).delete();
+}
+void deleteTask(String taskId) async {
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('tasks')
+          .doc(taskId)
+          .delete();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(247, 158, 158, 158),
           content: Text('Task Deleted...'),
         ),
       );
-    } catch (e) {
-      print('Error deleting task: $e');
     }
+  } catch (e) {
+    print('Error deleting task: $e');
   }
+}
 
   void createNewTask() {
     showDialog(
@@ -188,11 +209,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(255, 185, 223, 255),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('tasks').snapshots(),
+        stream: _firestore.collection('users').doc(_auth.currentUser?.uid).collection('tasks').snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return CircularProgressIndicator();
-          }
 
           var tasks = snapshot.data!.docs;
 
