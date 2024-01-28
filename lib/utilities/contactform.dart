@@ -17,11 +17,18 @@ class _ContactFormState extends State<ContactForm> {
 
     if (_formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
+      _formKey.currentState!.save();
+      
+      // Save data to Firestore
+      FirebaseFirestore.instance.collection('contacts').add({
+        'name': _name,
+        'email': _email,
+        'message': _message,
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Submitted..')),
       );
-      _formKey.currentState!.save();
     // Here, you can use _name, _email, and _message for further actions like sending an email
     }
   }

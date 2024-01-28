@@ -1,15 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/signin_screen.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 import 'pages/home_page.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'firebase_options.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); 
@@ -18,14 +16,14 @@ void main() async {
     // options: DefaultFirebaseOptions.currentPlatform,
     );
 
+  FirebaseFirestore.instance.settings=const Settings(
+    persistenceEnabled: true
+  );
+
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug,
   );
   
-
-  await Hive.initFlutter();
-
-  var box=await Hive.openBox('mybox');
 
 
   runApp(const MyApp());

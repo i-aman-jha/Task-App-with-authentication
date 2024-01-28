@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/signin_screen.dart';
 import 'package:flutter_application_1/utilities/reusable_func.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,6 +16,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordTextController=TextEditingController();
   TextEditingController _emailTextController=TextEditingController();
   TextEditingController _usernameTextController=TextEditingController();
+
+  
 
   // @override
   // void dispose() {
@@ -75,6 +78,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 30,
                 ),
+
+                textField("Enter Username",Icons.person_4,false,_usernameTextController),
+              
+                const SizedBox(
+                  height: 20,
+                ),
                 
                 textField("Enter Email",Icons.email,false,_emailTextController),
               
@@ -87,6 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SignIn_UpButton(context, false, (){
                   FocusScope.of(context).unfocus();
+                  
                   FirebaseAuth.instance.createUserWithEmailAndPassword(
                     email: _emailTextController.text,
                     password: _passwordTextController.text
@@ -102,6 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SnackBar(content: Text('Error...')),
                       );
                     });
+                    
                   
 
 

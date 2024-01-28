@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,93 +10,86 @@ import 'package:flutter_application_1/utilities/dialogBox.dart';
 import 'package:flutter_application_1/pages/signin_screen.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 import '../utilities/tasks.dart';
 
-
 class HomePage extends StatefulWidget {
-
   static const String routeName = '/homePage';
 
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-  final _myBox=Hive.box('mybox');
-  taskDatabase db=taskDatabase();
+  final _controller = TextEditingController();
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  TaskDatabase db = TaskDatabase();
 
   @override
   void initState() {
-    if(_myBox.get("TASKLIST")==null){
-      db.createInitialData();
-    }
-    else{
+    
       db.loadData();
-    }
     super.initState();
   }
 
-  final _controller=TextEditingController();
+  void saveNewTask() async {
+    try {
+      await _firestore.collection('tasks').add({
+        'taskName': _controller.text,
+        'taskCompleted': false,
+      });
 
-  // List taskList=[
-  //     ["Task 1",false],
-  //     ["Task 2",false],
-  //   ];
-  void checkBoxChanged(bool? value, int index){
-    setState(() {
-      db.taskList[index][1]= !db.taskList[index][1];
-    });
-    db.updateDatabase();
-
-  }
-
-  void saveNewTask(){
-    setState(() {
-      db.taskList.add([_controller.text,false]);
-      _controller .clear();
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Color.fromARGB(247, 158, 158, 158),
-              content: Text('Task Added...'),
-            ),
-          );
-    Navigator.of(context).pop();
-    db.updateDatabase();
-  }
-
-
-  void createNewTask(){
-    showDialog(context: context, 
-    builder: (context){
-      return DialogBox(
-        controller: _controller,
-        onSave: saveNewTask,
-        onCancel: ()=>Navigator.of(context).pop(),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(247, 158, 158, 158),
+          content: Text('Task Added...'),
+        ),
       );
+    } catch (e) {
+      print('Error adding task: $e');
     }
+
+    _controller.clear();
+    Navigator.of(context).pop();
+  }
+
+  void checkBoxChanged(bool? value, String taskId) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).update({
+        'taskCompleted': !value!,
+      });
+    } catch (e) {
+      print('Error updating task: $e');
+    }
+  }
+
+  void deleteTask(String taskId) async {
+    try {
+      await _firestore.collection('tasks').doc(taskId).delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(247, 158, 158, 158),
+          content: Text('Task Deleted...'),
+        ),
+      );
+    } catch (e) {
+      print('Error deleting task: $e');
+    }
+  }
+
+  void createNewTask() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          controller: _controller,
+          onSave: saveNewTask,
+          onCancel: () => Navigator.of(context).pop(),
+        );
+      },
     );
   }
-
-  void deleteTask(int index){
-    setState(() {
-      db.taskList.removeAt(index);
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Color.fromARGB(247, 158, 158, 158),
-              content: Text('Task Deleted...'),
-            ),
-          );
-    db.updateDatabase();
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -107,65 +99,58 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           "TASKS",
           style: GoogleFonts.rubikBurned(
-            textStyle: TextStyle(
-              fontSize: 30,
-              letterSpacing: 8,
-              fontWeight: FontWeight.w900
-            )
+            textStyle: const TextStyle(
+                fontSize: 30, letterSpacing: 8, fontWeight: FontWeight.w900),
           ),
-           
-          ),
-          actions: [
-          // logouut button
+        ),
+        actions: [
+          // logout button
           IconButton(
-            icon: Icon(Icons.logout_outlined,color: Colors.black,),
+            icon: Icon(Icons.logout_outlined, color: Colors.black),
             onPressed: () {
               FirebaseAuth.instance.signOut().then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Signed Out Successfully...')),
+                  const SnackBar(content: Text('Signed Out Successfully...')),
                 );
-                Navigator.push(context,MaterialPageRoute(builder: (context) => const SignInScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()));
               });
             },
           ),
         ],
-          
         backgroundColor: Colors.blueAccent,
         elevation: 15,
         shadowColor: Colors.blueAccent,
       ),
       drawer: Drawer(
-        // backgroundColor:Color.fromARGB(255, 218, 231, 255),
         child: ListView(
           children: [
             const DrawerHeader(
-              // decoration: BoxDecoration(
-              //   color: Colors.blueAccent
-              // ),
               child: Column(
                 children: [
-                  Icon(Icons.task,size: 100,),
-                  Text('T A S K S',
-                  style: TextStyle(fontSize: 20,letterSpacing: 6),
+                  Icon(Icons.task, size: 100),
+                  Text(
+                    'T A S K S',
+                    style: TextStyle(fontSize: 20, letterSpacing: 6),
                   ),
                 ],
               ),
-            
             ),
             ListTile(
               contentPadding: EdgeInsets.all(15),
               leading: Icon(Icons.home),
-              title:
-               Text('H O M E',style: GoogleFonts.orbitron(
-                fontSize: 25,
-                fontWeight:FontWeight.w300
-              ),),
+              title: Text(
+                'H O M E',
+                style: GoogleFonts.orbitron(
+                    fontSize: 25, fontWeight: FontWeight.w300),
+              ),
               onTap: () {
-                // Close the drawer before navigating
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
 
-                //Check if the current route is not HomePage, then navigate
-                if (ModalRoute.of(context)?.settings.name != HomePage.routeName) {
+                if (ModalRoute.of(context)?.settings.name !=
+                    HomePage.routeName) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),
@@ -173,75 +158,58 @@ class _HomePageState extends State<HomePage> {
                 }
               },
             ),
-
-            
-
             ListTile(
-              
               contentPadding: EdgeInsets.all(15),
               leading: Icon(Icons.contact_support),
-              title: 
-               Text('C O N T A C T  M E',style: GoogleFonts.orbitron(
-                fontSize: 25,
-                fontWeight:FontWeight.w300
-              ),),
-              onTap: (){
-                // Close the drawer before navigating
-                
-                Navigator.of(context).pop(); 
-        
-                //Check if the current route is not Aboutpage, then navigate
-                if (ModalRoute.of(context)?.settings.name != ContactPage.routeName) {
-                  
+              title: Text(
+                'C O N T A C T  M E',
+                style: GoogleFonts.orbitron(
+                    fontSize: 25, fontWeight: FontWeight.w300),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+
+                if (ModalRoute.of(context)?.settings.name !=
+                    ContactPage.routeName) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => ContactPage()),
                   );
                 }
               },
-            ),  
-            // ListTile(
-              
-            //   contentPadding: EdgeInsets.all(15),
-            //   leading: Icon(Icons.contact_support),
-            //   title: 
-            //    Text('Register',style: GoogleFonts.orbitron(
-            //     fontSize: 25,
-            //     fontWeight:FontWeight.w300
-            //   ),),
-            //   onTap: (){
-            //     // Close the drawer before navigating
-                
-            //     Navigator.of(context).pop(); 
-        
-            //     //Check if the current route is not Aboutpage, then navigate
-            //     if (ModalRoute.of(context)?.settings.name != SignInScreen.routeName) {
-                  
-            //       Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(builder: (context) => SignInScreen()),
-            //       );
-            //     }
-            //   },
-            // ),  
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(),
         onPressed: createNewTask,
-        child: Icon(Icons.add,size: 30,),
+        child: Icon(Icons.add, size: 30),
         backgroundColor: Color.fromARGB(255, 185, 223, 255),
-        ),
-      body: ListView.builder(
-        itemCount: db.taskList.length,
-        itemBuilder: (context, index) {
-          return Tasks(
-            TaskName: db.taskList[index][0], 
-            taskCompleted: db.taskList[index][1],
-             onChanged: (value) => checkBoxChanged(value,index),
-             deleteFunction: (context) => deleteTask(index),
-             );
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _firestore.collection('tasks').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
+
+          var tasks = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              var task = tasks[index];
+              var taskId = task.id;
+
+              return Tasks(
+                TaskName: task['taskName'],
+                taskCompleted: task['taskCompleted'],
+                onChanged: (value) => checkBoxChanged(value, taskId),
+                deleteFunction: (context) => deleteTask(taskId),
+              );
+            },
+          );
         },
       ),
     );
