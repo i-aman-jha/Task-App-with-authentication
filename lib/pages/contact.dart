@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
+import 'package:flutter_application_1/pages/signin_screen.dart';
 import 'package:flutter_application_1/utilities/contactform.dart';
 import 'package:flutter_application_1/utilities/footer.dart';
 import 'package:flutter_application_1/utilities/socialmedia.dart';
@@ -96,6 +98,26 @@ class ContactPage extends StatelessWidget {
                 }
               },
             ),  
+            ListTile(
+              contentPadding: EdgeInsets.all(15),
+              leading: Icon(Icons.logout_rounded),
+              title: Text(
+                'L O G  O U T',
+                style: GoogleFonts.orbitron(
+                    fontSize: 25, fontWeight: FontWeight.w300),
+              ),
+              onTap: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Signed Out Successfully...')),
+                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()));
+              });
+              },
+            ),
           ],
         ),
       ),

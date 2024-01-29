@@ -205,6 +205,26 @@ void deleteTask(String taskId) async {
                 }
               },
             ),
+            ListTile(
+              contentPadding: EdgeInsets.all(15),
+              leading: Icon(Icons.logout_rounded),
+              title: Text(
+                'L O G  O U T',
+                style: GoogleFonts.orbitron(
+                    fontSize: 25, fontWeight: FontWeight.w300),
+              ),
+              onTap: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Signed Out Successfully...')),
+                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInScreen()));
+              });
+              },
+            ),
           ],
         ),
       ),
