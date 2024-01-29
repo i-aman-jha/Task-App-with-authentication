@@ -33,7 +33,7 @@ TextField textField(String text,IconData icon,bool isPasswordType,TextEditingCon
   );
 }
 
-Container SignIn_UpButton(BuildContext context,bool isLogin,Function onTap){
+Container Button(BuildContext context,String title,Function onTap){
   return Container(
     width: MediaQuery.of(context).size.width,
     height: 50,
@@ -43,7 +43,7 @@ Container SignIn_UpButton(BuildContext context,bool isLogin,Function onTap){
     ),
     child: ElevatedButton(
       onPressed: (){onTap();},
-      child: Text(isLogin? 'Sign In':'Sign Up',
+      child: Text(title,
       style: const TextStyle(
         color: Colors.black, fontWeight: FontWeight.bold,fontSize: 17
       ),
@@ -57,3 +57,5 @@ Container SignIn_UpButton(BuildContext context,bool isLogin,Function onTap){
     ),
   );
 }
+
+

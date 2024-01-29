@@ -4,20 +4,16 @@ import 'package:flutter_application_1/pages/signin_screen.dart';
 import 'package:flutter_application_1/utilities/reusable_func.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _passwordTextController=TextEditingController();
+class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController _emailTextController=TextEditingController();
-  TextEditingController _usernameTextController=TextEditingController();
-
   
-
   // @override
   // void dispose() {
   //   _passwordTextController.dispose();
@@ -29,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -63,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 // ImageWidget("assets/images/account.png"),
                 Text(
-                  "SIGN UP",
+                  "FORGOT PASSWORD",
                   style: GoogleFonts.exo2(
                     textStyle: const TextStyle(
                       color: Colors.white,
@@ -77,44 +74,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-
-                textField("Enter Username",Icons.person_4,false,_usernameTextController),
-              
-                const SizedBox(
-                  height: 20,
-                ),
                 
                 textField("Enter Email",Icons.email,false,_emailTextController),
               
                 const SizedBox(
                   height: 20,
                 ),
-                textField("Enter Password",Icons.password_sharp,true,_passwordTextController),
-                const SizedBox(
-                  height: 20,
-                ),
-                Button(context, "Sign Up", (){
-                  FocusScope.of(context).unfocus();
-                  
-                  FirebaseAuth.instance.createUserWithEmailAndPassword(
-                    email: _emailTextController.text,
-                    password: _passwordTextController.text
-                    ).then((value) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Account created successfully...')),
-                      );
-                      print("created new account");
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SignInScreen()));
-                    }).onError((error, stackTrace) {
-                      // print("Error ${error.tostring()}");
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Error...')),
-                      );
-                    });
-                    
-                  
 
-
+                Button(context, "Forgot Password",(){
+                  FirebaseAuth.instance.sendPasswordResetEmail(email: _emailTextController.text).then((value) => Navigator.of(context).pop());
                 }),
                 signInOption()
               ],

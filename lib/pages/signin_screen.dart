@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/forgotpassword.dart';
 import 'package:flutter_application_1/pages/home_page.dart';
 import 'package:flutter_application_1/pages/signup_screen.dart';
 import 'package:flutter_application_1/utilities/reusable_func.dart';
@@ -67,9 +68,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 textField("Enter Password",Icons.password_sharp,true,_passwordTextController),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
-                SignIn_UpButton(context, true, (){
+                forgotOption(),
+                const SizedBox(
+                  height: 5,
+                ),
+                Button(context, "Sign In", (){
                   FocusScope.of(context).unfocus();
                   FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: _emailTextController.text, 
@@ -87,6 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     });
                 }),
                 signUpOption(),
+               
               ],
             ),
           ),
@@ -108,6 +114,25 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         child: const Text("Sign Up",
         style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+        ),
+      ),
+    ],
+  );
+ }
+
+ Row forgotOption(){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => ForgotPassword())));
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(right:6),
+          child: const Text("Forgot Password?",
+          style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     ],
