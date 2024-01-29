@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TaskDatabase db = TaskDatabase();
+  
 
   @override
   void initState() {
@@ -120,6 +121,9 @@ void deleteTask(String taskId) async {
 
   @override
   Widget build(BuildContext context) {
+    User? user = _auth.currentUser;
+    String email = user?.email ?? '';
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -154,13 +158,15 @@ void deleteTask(String taskId) async {
       drawer: Drawer(
         child: ListView(
           children: [
-            const DrawerHeader(
+            DrawerHeader(
+              
               child: Column(
                 children: [
-                  Icon(Icons.task, size: 100),
+                  
+                  Icon(Icons.person_pin, size: 100),
                   Text(
-                    'T A S K S',
-                    style: TextStyle(fontSize: 20, letterSpacing: 6),
+                    email,
+                    style: TextStyle(fontSize: 18),
                   ),
                 ],
               ),
