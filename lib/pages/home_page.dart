@@ -45,6 +45,12 @@ class _HomePageState extends State<HomePage> {
           'taskCompleted': false,
         });
         db.loadData(user.uid);
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(247, 158, 158, 158),
+          content: Text('Task Added..'),
+          )
+        );
       }
     } catch (e) {
       print('Error adding task: $e');
@@ -64,12 +70,12 @@ void checkBoxChanged(bool? value, String taskId) async {
           .collection('tasks')
           .doc(taskId)
           .update({
-        'taskCompleted': !value!,
+        'taskCompleted': value,
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Color.fromARGB(247, 158, 158, 158),
-          content: Text('Task Added...'),
+          content: Text('Task Done..'),
         ),
       );
     }
@@ -212,7 +218,9 @@ void deleteTask(String taskId) async {
         stream: _firestore.collection('users').doc(_auth.currentUser?.uid).collection('tasks').snapshots(),
         builder: (context, snapshot) {
 
-          var tasks = snapshot.data!.docs;
+           if (snapshot.hasData) {
+            var tasks = snapshot.data!.docs;
+          
 
           return ListView.builder(
             itemCount: tasks.length,
@@ -228,6 +236,16 @@ void deleteTask(String taskId) async {
               );
             },
           );
+           }
+           else {
+            return SizedBox(
+       height: MediaQuery.of(context).size.height / 1.3,
+       child: Center(
+           child: CircularProgressIndicator(),
+            ),
+        );
+          }
+
         },
       ),
     );

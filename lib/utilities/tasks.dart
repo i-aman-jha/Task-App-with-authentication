@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class Tasks extends StatelessWidget {
+class Tasks extends StatefulWidget {
   final String TaskName;
   final bool taskCompleted;
   Function(bool?)? onChanged;
@@ -17,6 +17,11 @@ class Tasks extends StatelessWidget {
   });
 
   @override
+  State<Tasks> createState() => _TasksState();
+}
+
+class _TasksState extends State<Tasks> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
@@ -24,7 +29,7 @@ class Tasks extends StatelessWidget {
         endActionPane: ActionPane(
           motion: StretchMotion(), 
           children: [
-            SlidableAction(onPressed: deleteFunction,
+            SlidableAction(onPressed: widget.deleteFunction,
             icon: Icons.delete,
             backgroundColor: Colors.redAccent,
             borderRadius: BorderRadius.circular(100),
@@ -50,14 +55,14 @@ class Tasks extends StatelessWidget {
             children: [
         
               Checkbox(
-                value: taskCompleted, 
-                onChanged: onChanged,
+                value: widget.taskCompleted, 
+                onChanged: widget.onChanged,
                 activeColor: Colors.black87,
                 ),
-              Text(TaskName,
+              Text(widget.TaskName,
               style: GoogleFonts.kalam(
                 textStyle: TextStyle(
-                  decoration: taskCompleted? TextDecoration.lineThrough : TextDecoration.none,
+                  decoration: widget.taskCompleted? TextDecoration.lineThrough : TextDecoration.none,
                   fontSize: 20,
                   ),
               )

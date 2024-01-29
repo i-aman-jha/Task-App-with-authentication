@@ -19,7 +19,7 @@ class ContactPage extends StatelessWidget {
         title: Text(
           "CONTACT",
           style: GoogleFonts.chakraPetch(
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontSize: 30,
               letterSpacing: 8,
               fontWeight: FontWeight.w900
