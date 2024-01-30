@@ -39,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color.fromARGB(255, 0, 181, 253),
+              Color.fromARGB(255, 0, 0, 0),
               Color.fromARGB(255, 1, 111, 165),
               Color.fromARGB(255, 88, 119, 135),
               Color.fromARGB(255, 132, 146, 161),
