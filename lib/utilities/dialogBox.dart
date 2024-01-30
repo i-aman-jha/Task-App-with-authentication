@@ -27,10 +27,9 @@ class DialogBox extends StatelessWidget {
                 controller: controller,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: "A D D  N E W  T A S K",
+                  labelText: "A D D  N E W  T A S K",
                   hintFadeDuration: Durations.medium2,
                   ),
-        
               ),
 
               Row(

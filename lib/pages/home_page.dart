@@ -40,7 +40,8 @@ class _HomePageState extends State<HomePage> {
   void saveNewTask() async {
     try {
       User? user = _auth.currentUser;
-      if (user != null) {
+      
+      if (user != null && _controller.text.isNotEmpty) {
         await _firestore.collection('users').doc(user.uid).collection('tasks').add({
           'taskName': _controller.text,
           'taskCompleted': false,
@@ -53,6 +54,15 @@ class _HomePageState extends State<HomePage> {
           )
         );
       }
+      else if(_controller.text.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color.fromARGB(247, 158, 158, 158),
+          content: Text('Task Field Empty'),
+          )
+        );
+      }
+      
     } catch (e) {
       print('Error adding task: $e');
     }
