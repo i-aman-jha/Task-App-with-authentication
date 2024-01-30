@@ -176,7 +176,7 @@ void deleteTask(String taskId) async {
                   Icon(Icons.person_pin, size: 100),
                   Text(
                     email,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05,),
                   ),
                 ],
               ),
@@ -187,7 +187,8 @@ void deleteTask(String taskId) async {
               title: Text(
                 'H O M E',
                 style: GoogleFonts.orbitron(
-                    fontSize: 25, fontWeight: FontWeight.w300),
+                    fontSize: MediaQuery.of(context).size.width * 0.06, 
+                    fontWeight: FontWeight.w300),
               ),
               onTap: () {
                 Navigator.of(context).pop();
@@ -207,7 +208,8 @@ void deleteTask(String taskId) async {
               title: Text(
                 'C O N T A C T  M E',
                 style: GoogleFonts.orbitron(
-                    fontSize: 25, fontWeight: FontWeight.w300),
+                    fontSize: MediaQuery.of(context).size.width * 0.06,
+                    fontWeight: FontWeight.w300),
               ),
               onTap: () {
                 Navigator.of(context).pop();
@@ -227,7 +229,8 @@ void deleteTask(String taskId) async {
               title: Text(
                 'L O G  O U T',
                 style: GoogleFonts.orbitron(
-                    fontSize: 25, fontWeight: FontWeight.w300),
+                    fontSize: MediaQuery.of(context).size.width * 0.06, 
+                    fontWeight: FontWeight.w300),
               ),
               onTap: () {
                 FirebaseAuth.instance.signOut().then((value) {
