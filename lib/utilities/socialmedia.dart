@@ -20,8 +20,8 @@ class buildSocialMediaIcons extends StatelessWidget {
               Text(
                 '!!Follow me on social media!!',
                 style: GoogleFonts.exo2(
-                textStyle: const TextStyle(
-                  fontSize: 30,
+                textStyle: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.07,
                   // letterSpacing: 8,
                   fontWeight: FontWeight.w700
                 )

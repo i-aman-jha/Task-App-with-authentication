@@ -190,7 +190,7 @@ void deleteTask(String taskId) async {
         actions: [
           PopupMenuButton(
             elevation: 20,
-            icon: Icon(Icons.account_circle_outlined,size: 40, color: Colors.black,),
+            icon: const Icon(Icons.account_circle_outlined,size: 40, color: Colors.black,),
             itemBuilder: (context)=>[
               PopupMenuItem(
                 value: item1,

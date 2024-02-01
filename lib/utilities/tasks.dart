@@ -85,7 +85,7 @@ class _TasksState extends State<Tasks> {
                       value: widget.item1,
                       child: Row(
                         children: [
-                          Icon(Icons.edit,size: 18,),
+                          const Icon(Icons.edit,size: 18,),
                           Text(widget.item1),
                         ],
                       ),
@@ -94,7 +94,7 @@ class _TasksState extends State<Tasks> {
                       value: widget.item2,
                       child: Row(
                         children: [
-                          Icon(Icons.delete,size: 18,),
+                          const Icon(Icons.delete,size: 18,),
                           Text(widget.item2),
                         ],
                       ),

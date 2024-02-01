@@ -14,7 +14,7 @@ class _ContactFormState extends State<ContactForm> {
   String _name = '';
   String _email = '';
   String _message = '';
-  Color _defaultLabelColor = Colors.blueAccent;
+  final Color _defaultLabelColor = Colors.blueAccent;
 
   void _submitForm() {
 

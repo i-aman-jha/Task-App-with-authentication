@@ -19,7 +19,7 @@ class buildSocialIcon extends StatelessWidget {
           );
         }
       },
-      child: Icon(icon, size: 40, color: Colors.blue),
+      child: Icon(icon, size: MediaQuery.of(context).size.width * 0.09, color: Colors.blue),
     );
   }
 }
