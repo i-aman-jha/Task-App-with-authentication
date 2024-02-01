@@ -1,52 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utilities/button.dart';
 
 class DialogBox extends StatelessWidget {
+  final String title;
   final controller;
   VoidCallback onSave;
-  VoidCallback onCancel;
 
   DialogBox({
     super.key,
+    required this.title,
     required this.controller,
     required this.onSave,
-    required this.onCancel,
     });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white,
-      content:Container(
-          // alignment: ,
-          height: 120,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "A D D  N E W  T A S K",
-                  hintFadeDuration: Durations.medium2,
-                  ),
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                MyButton(text: "Save", onPressed: onSave),
-
-                const SizedBox(width: 10,),
-
-                MyButton(text: "Cancel", onPressed: onCancel),
-              ],)
-
-
-            ],
+        title: Text(title),
+        
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: "Add New Task" ,
+            labelStyle: TextStyle(color: Colors.black),
+            hintFadeDuration: Durations.medium2,
+            focusedBorder: OutlineInputBorder(
+              // borderSide: BorderSide(color: Color.fromARGB(255, 28, 111, 255)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              // borderSide: BorderSide(color: Color.fromARGB(255, 28, 111, 255)),
+            )
+            ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: const Text('Cancel',style: TextStyle(color: Color.fromARGB(255, 28, 111, 255)),),
           ),
+          TextButton(
+            onPressed: onSave,
+            child: const Text('Save', style: TextStyle(color: Color.fromARGB(255, 28, 111, 255)),),
           ),
-      
-    );
+        ],
+      );
+    
   }
 }

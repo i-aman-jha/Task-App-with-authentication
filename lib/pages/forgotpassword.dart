@@ -12,7 +12,7 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  TextEditingController _emailTextController=TextEditingController();
+  final TextEditingController _emailTextController=TextEditingController();
   
   // @override
   // void dispose() {
@@ -102,7 +102,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
       GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => SignInScreen())));
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignInScreen())));
         },
         child: const Text("Sign In",
         style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),

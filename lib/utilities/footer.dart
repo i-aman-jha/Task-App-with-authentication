@@ -8,7 +8,7 @@ class footer extends StatelessWidget {
   Widget build(BuildContext context) {
      return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       color: Colors.blueAccent,
       child: Row(
         children: [
@@ -20,7 +20,7 @@ class footer extends StatelessWidget {
               fontSize: 16,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Text(
             '@ Aman Jha',
             textAlign: TextAlign.right,

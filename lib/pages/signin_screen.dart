@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class SignInScreen extends StatefulWidget {
   static const String routeName = '/SignInScreen';
   
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
                  Text(
                   "SIGN IN",
                   style: GoogleFonts.exo2(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                       letterSpacing: 3,
@@ -110,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => SignUpScreen())));
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignUpScreen())));
         },
         child: const Text("Sign Up",
         style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
@@ -126,11 +126,11 @@ class _SignInScreenState extends State<SignInScreen> {
     children: [
       GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => ForgotPassword())));
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => const ForgotPassword())));
         },
-        child: Padding(
-          padding: const EdgeInsets.only(right:6),
-          child: const Text("Forgot Password?",
+        child: const Padding(
+          padding: EdgeInsets.only(right:6),
+          child: Text("Forgot Password?",
           style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
           ),
         ),

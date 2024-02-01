@@ -12,9 +12,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _passwordTextController=TextEditingController();
-  TextEditingController _emailTextController=TextEditingController();
-  TextEditingController _usernameTextController=TextEditingController();
+  final TextEditingController _passwordTextController=TextEditingController();
+  final TextEditingController _emailTextController=TextEditingController();
+  final TextEditingController _usernameTextController=TextEditingController();
 
   
 
@@ -104,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         const SnackBar(content: Text('Account created successfully...')),
                       );
                       print("created new account");
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => SignInScreen()));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => const SignInScreen()));
                     }).onError((error, stackTrace) {
                       // print("Error ${error.tostring()}");
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -134,7 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: ((context) => SignInScreen())));
+          Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignInScreen())));
         },
         child: const Text("Sign In",
         style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),

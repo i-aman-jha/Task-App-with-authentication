@@ -5,7 +5,6 @@ import 'package:flutter_application_1/pages/signin_screen.dart';
 import 'package:flutter_application_1/utilities/contactform.dart';
 import 'package:flutter_application_1/utilities/footer.dart';
 import 'package:flutter_application_1/utilities/socialmedia.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ContactPage extends StatefulWidget {
@@ -50,7 +49,7 @@ class _ContactPageState extends State<ContactPage> {
               child: Column(
                 children: [
                   
-                  Icon(Icons.person_pin, size: 100),
+                  const Icon(Icons.person_pin, size: 100),
                   Text(
                     email,
                     style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05,),
@@ -59,8 +58,8 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ),
             ListTile(
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.home),
+              contentPadding: const EdgeInsets.all(15),
+              leading: const Icon(Icons.home),
               title:
                Text('H O M E',style: GoogleFonts.orbitron(
                 fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -74,7 +73,7 @@ class _ContactPageState extends State<ContactPage> {
                 if (ModalRoute.of(context)?.settings.name != HomePage.routeName) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 }
               },
@@ -84,8 +83,8 @@ class _ContactPageState extends State<ContactPage> {
 
             ListTile(
               
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.contact_support),
+              contentPadding: const EdgeInsets.all(15),
+              leading: const Icon(Icons.contact_support),
               title: 
                Text('C O N T A C T  M E',style: GoogleFonts.orbitron(
                 fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -100,14 +99,14 @@ class _ContactPageState extends State<ContactPage> {
                 if (ModalRoute.of(context)?.settings.name != ContactPage.routeName) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ContactPage()),
+                    MaterialPageRoute(builder: (context) => const ContactPage()),
                   );
                 }
               },
             ),  
             ListTile(
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.logout_rounded),
+              contentPadding: const EdgeInsets.all(15),
+              leading: const Icon(Icons.logout_rounded),
               title: Text(
                 'L O G  O U T',
                 style: GoogleFonts.orbitron(
@@ -129,7 +128,7 @@ class _ContactPageState extends State<ContactPage> {
         ),
       ),
 
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           children: [
             ContactForm(),
@@ -138,7 +137,7 @@ class _ContactPageState extends State<ContactPage> {
         ),
       ),
       resizeToAvoidBottomInset: false, // Set this to false to prevent the body from resizing when the keyboard is open
-      bottomNavigationBar: footer(),
+      bottomNavigationBar: const footer(),
       
     );
   }

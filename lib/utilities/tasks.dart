@@ -1,6 +1,6 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 class Tasks extends StatefulWidget {
@@ -8,12 +8,20 @@ class Tasks extends StatefulWidget {
   final bool taskCompleted;
   Function(bool?)? onChanged;
   Function(BuildContext)? deleteFunction;
+  Function(BuildContext)? editFunction;
+  
+  final String date;
+
+  String item1="Edit";
+  String item2="Delete";
 
   Tasks({super.key,
   required this.TaskName,
   required this.taskCompleted,
+  required this.date,
   required this.onChanged,
   required this.deleteFunction,
+  required this.editFunction,
   });
 
   @override
@@ -27,7 +35,7 @@ class _TasksState extends State<Tasks> {
       padding: const EdgeInsets.only(top: 20,left: 10,right: 10),
       child: Slidable(
         endActionPane: ActionPane(
-          motion: StretchMotion(), 
+          motion: const StretchMotion(), 
           children: [
             SlidableAction(onPressed: widget.deleteFunction,
             icon: Icons.delete,
@@ -38,36 +46,70 @@ class _TasksState extends State<Tasks> {
           ),
         child: Container(
           
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 218, 231, 255),
+            color: const Color.fromARGB(255, 218, 231, 255),
             borderRadius: BorderRadius.circular(10),
              boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.3),
                 spreadRadius: 1,
                 blurRadius: 4,
-                offset: Offset(0, 3), // changes the shadow direction
+                offset: const Offset(0, 3), // changes the shadow direction
               ),
             ],
             ),
-          child: Row(
+          child: Column(
             children: [
-        
-              Checkbox(
-                value: widget.taskCompleted, 
-                onChanged: widget.onChanged,
-                activeColor: Colors.black87,
-                ),
-              Text(widget.TaskName,
-              style: GoogleFonts.kalam(
-                textStyle: TextStyle(
-                  decoration: widget.taskCompleted? TextDecoration.lineThrough : TextDecoration.none,
-                  fontSize: 20,
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                      
+                  Checkbox(
+                    value: widget.taskCompleted, 
+                    onChanged: widget.onChanged,
+                    activeColor: Colors.black87,
+                    ),
+                  Text(widget.TaskName,
+                  style: GoogleFonts.kalam(
+                    textStyle: TextStyle(
+                      decoration: widget.taskCompleted? TextDecoration.lineThrough : TextDecoration.none,
+                      fontSize: 20,
+                      ),
+                  )
+                  
                   ),
-              )
-              
+                  const Spacer(),
+                  PopupMenuButton(itemBuilder: (context)=>[
+                    PopupMenuItem(
+                      child: Text(widget.item1),
+                      value: widget.item1,
+                    ),
+                    PopupMenuItem(
+                      child: Text(widget.item2),
+                      value: widget.item2,
+                    ),
+
+                  ],
+                  onSelected: (value){
+                    if(value==widget.item1){
+                      widget.editFunction?.call(context);
+                    }
+                    else if(value==widget.item2){
+                      widget.deleteFunction?.call(context);
+                    }
+                  },
+                  )
+                ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children:[
+                  Text(widget.date)
+
+                ]
+              ),
+              
             ],
           ),
         ),

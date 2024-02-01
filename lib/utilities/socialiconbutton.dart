@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 class buildSocialIcon extends StatelessWidget {
   final IconData icon;
   final String url;
-  const buildSocialIcon({Key? key, required this.icon, required this.url}) : super(key: key);
+  const buildSocialIcon({super.key, required this.icon, required this.url});
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContactForm extends StatefulWidget {
+  const ContactForm({super.key});
+
   @override
   _ContactFormState createState() => _ContactFormState();
 }
@@ -12,6 +14,7 @@ class _ContactFormState extends State<ContactForm> {
   String _name = '';
   String _email = '';
   String _message = '';
+  Color _defaultLabelColor = Colors.blueAccent;
 
   void _submitForm() {
 
@@ -60,6 +63,12 @@ class _ContactFormState extends State<ContactForm> {
               decoration: const InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                
+                floatingLabelStyle: TextStyle(color: Colors.black),
+                
                 contentPadding: EdgeInsets.all(10)
               ),
               validator: (value) {
@@ -77,6 +86,10 @@ class _ContactFormState extends State<ContactForm> {
               decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                floatingLabelStyle: TextStyle(color: Colors.black),
                 contentPadding: EdgeInsets.all(10)
               ),
               validator: (value) {
@@ -97,6 +110,10 @@ class _ContactFormState extends State<ContactForm> {
               decoration: const InputDecoration(
                 labelText: 'Message',
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                floatingLabelStyle: TextStyle(color: Colors.black),
                 contentPadding: EdgeInsets.all(10)
               ),
               maxLines: 3,

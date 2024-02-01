@@ -14,7 +14,7 @@ void main() async {
     // options: DefaultFirebaseOptions.currentPlatform,
     );
 
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   
 
 
@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:user != null ? HomePage() : SignInScreen(),
+      home:user != null ? const HomePage() : const SignInScreen(),
       theme: ThemeData(primaryColor: Colors.blueAccent),
     );
   }

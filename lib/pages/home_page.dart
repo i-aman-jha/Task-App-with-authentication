@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/database.dart';
 
@@ -10,12 +9,13 @@ import 'package:flutter_application_1/utilities/dialogBox.dart';
 import 'package:flutter_application_1/pages/signin_screen.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../utilities/tasks.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/homePage';
 
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TaskDatabase db = TaskDatabase();
   
@@ -45,18 +45,20 @@ class _HomePageState extends State<HomePage> {
         await _firestore.collection('users').doc(user.uid).collection('tasks').add({
           'taskName': _controller.text,
           'taskCompleted': false,
+          'timestamp': DateFormat('MMM d, h:mm a').format(DateTime.now()),
         });
         db.loadData(user.uid);
         ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Color.fromARGB(247, 158, 158, 158),
           content: Text('Task Added..'),
           )
         );
+        _controller.clear();
       }
       else if(_controller.text.isEmpty){
         ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Color.fromARGB(247, 158, 158, 158),
           content: Text('Task Field Empty'),
           )
@@ -84,7 +86,7 @@ void checkBoxChanged(bool? value, String taskId) async {
         'taskCompleted': value,
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Color.fromARGB(247, 158, 158, 158),
           content: Text('Task Done..'),
         ),
@@ -105,7 +107,7 @@ void deleteTask(String taskId) async {
           .doc(taskId)
           .delete();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Color.fromARGB(247, 158, 158, 158),
           content: Text('Task Deleted...'),
         ),
@@ -121,19 +123,61 @@ void deleteTask(String taskId) async {
       context: context,
       builder: (context) {
         return DialogBox(
+          title: "Add Task",
           controller: _controller,
           onSave: saveNewTask,
-          onCancel: () => Navigator.of(context).pop(),
         );
       },
     );
   }
 
+  void editTask(String taskId, String currentTaskName) {
+  TextEditingController editController = TextEditingController();
+  editController.text = currentTaskName;
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return DialogBox(
+        title: "Edit Task",
+        controller: editController, 
+        onSave: () async {
+          Navigator.of(context).pop(); // Close the dialog
+
+          try {
+            User? user = _auth.currentUser;
+            if (user != null) {
+              await _firestore
+                  .collection('users')
+                  .doc(user.uid)
+                  .collection('tasks')
+                  .doc(taskId)
+                  .update({
+                'taskName': editController.text,
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  backgroundColor:
+                      Color.fromARGB(247, 158, 158, 158),
+                  content: Text('Task Updated..'),
+                ),
+              );
+            }
+          } catch (e) {
+            print('Error updating task: $e');
+          }
+        }
+        );
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     User? user = _auth.currentUser;
     String email = user?.email ?? '';
-
+  
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -147,7 +191,7 @@ void deleteTask(String taskId) async {
         actions: [
           // logout button
           IconButton(
-            icon: Icon(Icons.logout_outlined, color: Colors.black),
+            icon: const Icon(Icons.logout_outlined, color: Colors.black),
             onPressed: () {
               FirebaseAuth.instance.signOut().then((value) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -173,7 +217,7 @@ void deleteTask(String taskId) async {
               child: Column(
                 children: [
                   
-                  Icon(Icons.person_pin, size: 100),
+                  const Icon(Icons.person_pin, size: 100),
                   Text(
                     email,
                     style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05,),
@@ -182,8 +226,8 @@ void deleteTask(String taskId) async {
               ),
             ),
             ListTile(
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.home),
+              contentPadding: const EdgeInsets.all(15),
+              leading: const Icon(Icons.home),
               title: Text(
                 'H O M E',
                 style: GoogleFonts.orbitron(
@@ -197,14 +241,14 @@ void deleteTask(String taskId) async {
                     HomePage.routeName) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 }
               },
             ),
             ListTile(
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.contact_support),
+              contentPadding: const EdgeInsets.all(15),
+              leading: const Icon(Icons.contact_support),
               title: Text(
                 'C O N T A C T  M E',
                 style: GoogleFonts.orbitron(
@@ -218,14 +262,14 @@ void deleteTask(String taskId) async {
                     ContactPage.routeName) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ContactPage()),
+                    MaterialPageRoute(builder: (context) => const ContactPage()),
                   );
                 }
               },
             ),
             ListTile(
-              contentPadding: EdgeInsets.all(15),
-              leading: Icon(Icons.logout_rounded),
+              contentPadding: const EdgeInsets.all(15),
+              leading: const Icon(Icons.logout_rounded),
               title: Text(
                 'L O G  O U T',
                 style: GoogleFonts.orbitron(
@@ -248,13 +292,13 @@ void deleteTask(String taskId) async {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         onPressed: createNewTask,
-        child: Icon(Icons.add, size: 30),
-        backgroundColor: Color.fromARGB(255, 185, 223, 255),
+        backgroundColor: const Color.fromARGB(255, 185, 223, 255),
+        child: const Icon(Icons.add, size: 30),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('users').doc(_auth.currentUser?.uid).collection('tasks').snapshots(),
+        stream: _firestore.collection('users').doc(_auth.currentUser?.uid).collection('tasks').orderBy('timestamp', descending: true).snapshots(),
         builder: (context, snapshot) {
 
            if (snapshot.hasData) {
@@ -266,12 +310,15 @@ void deleteTask(String taskId) async {
             itemBuilder: (context, index) {
               var task = tasks[index];
               var taskId = task.id;
+              
 
               return Tasks(
                 TaskName: task['taskName'],
                 taskCompleted: task['taskCompleted'],
+                date: task['timestamp'],
                 onChanged: (value) => checkBoxChanged(value, taskId),
                 deleteFunction: (context) => deleteTask(taskId),
+                editFunction: (context) => editTask(taskId,task['taskName']),
               );
             },
           );
@@ -279,7 +326,7 @@ void deleteTask(String taskId) async {
            else {
             return SizedBox(
        height: MediaQuery.of(context).size.height / 1.3,
-       child: Center(
+       child: const Center(
            child: CircularProgressIndicator(),
             ),
         );

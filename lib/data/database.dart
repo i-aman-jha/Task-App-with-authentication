@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class TaskDatabase {
   final CollectionReference _tasksCollection =
@@ -13,8 +14,8 @@ class TaskDatabase {
         FirebaseFirestore.instance.collection('users').doc(userId).collection('tasks');
 
     taskList = [
-      {"taskName": "Task 1", "taskCompleted": false},
-      {"taskName": "Task 2", "taskCompleted": false},
+      {"taskName": "Task 1", "taskCompleted": false,"timestamp":DateFormat('MMM d, h:mm a').format(DateTime.now())},
+      {"taskName": "Task 2", "taskCompleted": false,"timestamp":DateFormat('MMM d, h:mm a').format(DateTime.now())},
     ];
 
     // Add tasks to the user-specific subcollection
@@ -36,6 +37,7 @@ class TaskDatabase {
           .map((doc) => {
                 "taskName": doc['taskName'],
                 "taskCompleted": doc['taskCompleted'],
+                "timestamp":doc['timestamp'],
                 "taskId": doc.id,
               })
           .toList();
