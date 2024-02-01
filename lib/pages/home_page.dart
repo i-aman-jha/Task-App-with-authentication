@@ -2,19 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/database.dart';
-
 import 'package:flutter_application_1/pages/contact.dart';
-
 import 'package:flutter_application_1/utilities/dialogBox.dart';
 import 'package:flutter_application_1/pages/signin_screen.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../utilities/tasks.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/homePage';
-
+  
   const HomePage({super.key});
 
   @override
@@ -26,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TaskDatabase db = TaskDatabase();
+
+  String item1="Logout";
   
 
   @override
@@ -189,21 +188,34 @@ void deleteTask(String taskId) async {
           ),
         ),
         actions: [
-          // logout button
-          IconButton(
-            icon: const Icon(Icons.logout_outlined, color: Colors.black),
-            onPressed: () {
-              FirebaseAuth.instance.signOut().then((value) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Signed Out Successfully...')),
-                );
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignInScreen()));
-              });
+          PopupMenuButton(
+            elevation: 20,
+            icon: Icon(Icons.account_circle_outlined,size: 40, color: Colors.black,),
+            itemBuilder: (context)=>[
+              PopupMenuItem(
+                value: item1,
+                child: Row(
+                  children: [
+                    const Icon(Icons.logout),
+                    Text(item1),
+                  ],
+                ),
+              ),
+            ],
+            onSelected: (value){
+              if(value==item1){
+                FirebaseAuth.instance.signOut().then((value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Signed Out Successfully...')),
+                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignInScreen()));
+                });
+              }
             },
-          ),
+          )
         ],
         backgroundColor: Colors.blueAccent,
         elevation: 15,
@@ -217,7 +229,20 @@ void deleteTask(String taskId) async {
               child: Column(
                 children: [
                   
-                  const Icon(Icons.person_pin, size: 100),
+                  const CircleAvatar(
+                    backgroundColor: Colors.black,
+                    radius: 51,
+                    child: CircleAvatar(
+                    backgroundColor: Color(0xffE6E6E6),
+                    radius: 50,
+                    child: Icon(
+                      Icons.person,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      size: 60,
+                    ),
+
+                    )
+                  ),
                   Text(
                     email,
                     style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05,),

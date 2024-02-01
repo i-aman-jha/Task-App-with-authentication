@@ -19,6 +19,9 @@ class ContactPage extends StatefulWidget {
 
 class _ContactPageState extends State<ContactPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String item1="Logout";
+
   @override
   Widget build(BuildContext context) {
     User? user = _auth.currentUser;
@@ -36,6 +39,36 @@ class _ContactPageState extends State<ContactPage> {
           ),
            
           ),
+          actions: [
+          PopupMenuButton(
+            elevation: 20,
+            icon: Icon(Icons.account_circle_outlined,size: 40, color: Colors.black,),
+            itemBuilder: (context)=>[
+              PopupMenuItem(
+                value: item1,
+                child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    Text(item1),
+                  ],
+                ),
+              ),
+            ],
+            onSelected: (value){
+              if(value==item1){
+                FirebaseAuth.instance.signOut().then((value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Signed Out Successfully...')),
+                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignInScreen()));
+                });
+              }
+            },
+          )
+        ],
         backgroundColor: Colors.blueAccent,
         elevation: 15,
         shadowColor: Colors.blueAccent,
@@ -44,12 +77,25 @@ class _ContactPageState extends State<ContactPage> {
         // backgroundColor:Color.fromARGB(255, 218, 231, 255),
         child: ListView(
           children: [
-            DrawerHeader(
+           DrawerHeader(
               
               child: Column(
                 children: [
                   
-                  const Icon(Icons.person_pin, size: 100),
+                  const CircleAvatar(
+                    backgroundColor: Colors.black,
+                    radius: 51,
+                    child: CircleAvatar(
+                    backgroundColor: Color(0xffE6E6E6),
+                    radius: 50,
+                    child: Icon(
+                      Icons.person,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      size: 60,
+                    ),
+
+                    )
+                  ),
                   Text(
                     email,
                     style: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05,),

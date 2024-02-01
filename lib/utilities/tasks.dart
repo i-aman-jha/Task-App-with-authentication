@@ -82,12 +82,22 @@ class _TasksState extends State<Tasks> {
                   const Spacer(),
                   PopupMenuButton(itemBuilder: (context)=>[
                     PopupMenuItem(
-                      child: Text(widget.item1),
                       value: widget.item1,
+                      child: Row(
+                        children: [
+                          Icon(Icons.edit,size: 18,),
+                          Text(widget.item1),
+                        ],
+                      ),
                     ),
                     PopupMenuItem(
-                      child: Text(widget.item2),
                       value: widget.item2,
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete,size: 18,),
+                          Text(widget.item2),
+                        ],
+                      ),
                     ),
 
                   ],
