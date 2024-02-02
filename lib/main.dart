@@ -19,13 +19,13 @@ class MyApp extends StatefulWidget {
 
   @override
   State<MyApp> createState() => _MyAppState();
+  
 }
 
 class _MyAppState extends State<MyApp> {
   User? user;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     user=FirebaseAuth.instance.currentUser;
   }
