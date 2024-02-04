@@ -131,44 +131,44 @@ void deleteTask(String taskId) async {
   }
 
   void editTask(String taskId, String currentTaskName) {
-  TextEditingController editController = TextEditingController();
-  editController.text = currentTaskName;
+    TextEditingController editController = TextEditingController();
+    editController.text = currentTaskName;
 
-  showDialog(
-    context: context,
-    builder: (context) {
-      return DialogBox(
-        title: "Edit Task",
-        controller: editController, 
-        onSave: () async {
-          Navigator.of(context).pop(); // Close the dialog
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox(
+          title: "Edit Task",
+          controller: editController, 
+          onSave: () async {
+            Navigator.of(context).pop(); // Close the dialog
 
-          try {
-            User? user = _auth.currentUser;
-            if (user != null) {
-              await _firestore
-                  .collection('users')
-                  .doc(user.uid)
-                  .collection('tasks')
-                  .doc(taskId)
-                  .update({
-                'taskName': editController.text,
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor:
-                      Color.fromARGB(247, 158, 158, 158),
-                  content: Text('Task Updated..'),
-                ),
-              );
+            try {
+              User? user = _auth.currentUser;
+              if (user != null) {
+                await _firestore
+                    .collection('users')
+                    .doc(user.uid)
+                    .collection('tasks')
+                    .doc(taskId)
+                    .update({
+                  'taskName': editController.text,
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor:
+                        Color.fromARGB(247, 158, 158, 158),
+                    content: Text('Task Updated..'),
+                  ),
+                );
+              }
+            } catch (e) {
+              print('Error updating task: $e');
             }
-          } catch (e) {
-            print('Error updating task: $e');
           }
-        }
-        );
-    },
-  );
+          );
+      },
+    );
 }
 
 

@@ -48,15 +48,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).size.height * 0.1, 20, 0),
             child: Column(
               children: [
                 Image.asset(
-                  "assets/images/account.png",
+                  // "assets/images/account.png",
+                  "assets/images/forgot.png",
                   fit: BoxFit.fitWidth,
-                  width: 80,
-                  height: 80,
-                  color: Colors.white,
+                  width: 380,
+                  height: 380,
+                  // color: Colors.white,
                 ),
                 // ImageWidget("assets/images/account.png"),
                 Text(
